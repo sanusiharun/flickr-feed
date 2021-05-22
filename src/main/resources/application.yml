@@ -1,0 +1,21 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: flickr-service
+  datasource:
+    password: 54e97dfbfc1169b9a845e25a521b4c2762b10edccc1cf79179752da1eff688e6
+    platform: postgres
+    url: jdbc:postgresql://ec2-18-214-140-149.compute-1.amazonaws.com:5432/d9ro22fhmp7m2u
+    username: xarnqagqddskrv
+  jpa:
+    database: POSTGRESQL
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: false

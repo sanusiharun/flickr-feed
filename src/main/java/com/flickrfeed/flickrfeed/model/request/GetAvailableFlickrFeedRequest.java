@@ -1,4 +1,4 @@
-package com.flickrfeed.flickrfeed.request;
+package com.flickrfeed.flickrfeed.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

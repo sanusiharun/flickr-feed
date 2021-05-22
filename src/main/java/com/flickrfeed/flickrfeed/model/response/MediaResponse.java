@@ -1,4 +1,4 @@
-package com.flickrfeed.flickrfeed.response;
+package com.flickrfeed.flickrfeed.model.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

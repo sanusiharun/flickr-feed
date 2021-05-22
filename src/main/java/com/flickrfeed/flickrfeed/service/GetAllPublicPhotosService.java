@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flickrfeed.flickrfeed.response.JsonFlickrFeedResponse;
+import com.flickrfeed.flickrfeed.model.response.JsonFlickrFeedResponse;
 import com.flickrfeed.flickrfeed.util.Constants;
 
 @Service

@@ -1,6 +1,8 @@
-package com.flickrfeed.flickrfeed.model;
+package com.flickrfeed.flickrfeed.model.response;
 
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,13 +13,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FlickrFeed {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class JsonFlickrFeedResponse {
 
 	private String title;
 	private String link;
 	private String description;
 	private String modified;
 	private String generator;
-	private List<Items> items;
+	private List<ItemsResponse> items;
 	
 }

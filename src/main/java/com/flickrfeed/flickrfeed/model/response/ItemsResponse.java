@@ -1,7 +1,8 @@
-package com.flickrfeed.flickrfeed.response;
+package com.flickrfeed.flickrfeed.model.response;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,10 +18,12 @@ public class ItemsResponse {
 	private String title;
 	private String link;
 	private MediaResponse media;
-	private String date_taken;
+	@JsonProperty("date_taken")
+	private String dateTaken;
 	private String description;
 	private String published;
 	private String author;
-	private String author_id;
+	@JsonProperty("author_id")
+	private String authorId;
 	private String tags;
 }
