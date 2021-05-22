@@ -3,6 +3,7 @@ package com.flickrfeed.flickrfeed.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,9 +15,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.flickrfeed.flickrfeed.model.entity.FlickrFeed;
 import com.flickrfeed.flickrfeed.model.request.FilterFlickrFeedRequest;
+import com.flickrfeed.flickrfeed.model.response.DeleteAllDataResponse;
 import com.flickrfeed.flickrfeed.model.response.FilterFlickrFeedResponse;
 import com.flickrfeed.flickrfeed.model.response.ItemsResponse;
 import com.flickrfeed.flickrfeed.model.response.JsonFlickrFeedResponse;
+import com.flickrfeed.flickrfeed.service.DeleteAllDataService;
 import com.flickrfeed.flickrfeed.service.GetAllPublicPhotosService;
 import com.flickrfeed.flickrfeed.service.GetDetailItemByIdService;
 import com.flickrfeed.flickrfeed.service.GrabPublicPhotosService;
@@ -34,14 +37,18 @@ public class FeedController {
 	GrabPublicPhotosService grabPublicPhotosService;
 	GetDetailItemByIdService getDetailItemByIdService;
 	SearchFlickrFeedService searchFlickrFeedService;
+	DeleteAllDataService deleteAllDataService;
 
 	public FeedController(GetAllPublicPhotosService getAllPublicPhotosService,
 			GrabPublicPhotosService grabPublicPhotosService, GetDetailItemByIdService getDetailItemByIdService,
-			SearchFlickrFeedService searchFlickrFeedService) {
+			SearchFlickrFeedService searchFlickrFeedService,
+			DeleteAllDataService deleteAllDataService) {
 		this.getAllPublicPhotosService = getAllPublicPhotosService;
 		this.grabPublicPhotosService = grabPublicPhotosService;
 		this.getDetailItemByIdService = getDetailItemByIdService;
 		this.searchFlickrFeedService = searchFlickrFeedService;
+		this.deleteAllDataService = deleteAllDataService;
+		
 	}
 
 	@ApiOperation(value = "Get Flicker Feed from Flickr source", notes = "API Get available data from Flickr source")
@@ -75,6 +82,17 @@ public class FeedController {
 	public ResponseEntity<FilterFlickrFeedResponse> searchFlickrFeed(FilterFlickrFeedRequest request) {
 
 		FilterFlickrFeedResponse response = searchFlickrFeedService.search(request);
+		return response == null ? new ResponseEntity<>(null, HttpStatus.NO_CONTENT)
+				: new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "Delete Flicker Feed from App DB", notes = "Reset DB")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 500, message = "Ups something error") })
+	@DeleteMapping
+	public ResponseEntity<DeleteAllDataResponse> deleteAllData() {
+
+		DeleteAllDataResponse response = deleteAllDataService.deleteAll();
 		return response == null ? new ResponseEntity<>(null, HttpStatus.NO_CONTENT)
 				: new ResponseEntity<>(response, HttpStatus.OK);
 	}

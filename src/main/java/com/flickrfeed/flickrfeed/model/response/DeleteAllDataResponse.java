@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @AllArgsConstructor
-public class ImageItemResponse {
-	private Resource image;
+public class DeleteAllDataResponse {
+	private String status;
 	
 }
