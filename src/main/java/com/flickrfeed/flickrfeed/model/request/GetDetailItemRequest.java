@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class GetDetailItems {
+public class GetDetailItemRequest {
 	private Long itemId;
 }

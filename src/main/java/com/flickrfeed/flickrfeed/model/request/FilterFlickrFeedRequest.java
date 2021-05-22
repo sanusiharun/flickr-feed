@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FilterFlickrFeedRequest extends BasePaginationRequest{
+	
 	private String title;
 	private String description;
 	private String author;

@@ -72,7 +72,7 @@ public class FeedController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 500, message = "Ups something error") })
 	@GetMapping(value = "get-flickr-feed/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<FilterFlickrFeedResponse> searchFlickrFeed(FilterFlickrFeedRequest request){
+	public ResponseEntity<FilterFlickrFeedResponse> searchFlickrFeed(FilterFlickrFeedRequest request) {
 
 		FilterFlickrFeedResponse response = searchFlickrFeedService.search(request);
 		return response == null ? new ResponseEntity<>(null, HttpStatus.NO_CONTENT)
