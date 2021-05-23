@@ -11,7 +11,7 @@ import com.flickrfeed.flickrfeed.model.entity.Items;
 import com.flickrfeed.flickrfeed.model.projection.ItemsView;
 
 public interface ItemsRepository extends JpaRepository<Items, Long>{
-
+	
 	Optional<Items> findByTitle(String title);
 	
 	@Query(value = "select i.author, i.author_id as authorId, i.date_taken as dateTaken, i.title, i.link, i.published, i.tags, m.m as imageUrl from items i "

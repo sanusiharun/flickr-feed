@@ -9,19 +9,19 @@ import com.flickrfeed.flickrfeed.model.response.ItemsResponse;
 import com.flickrfeed.flickrfeed.repository.ItemsRepository;
 
 @Service
-public class GetDetailItemByIdService {
+public class GetDetailItemByTitleService {
 
 	private ItemsRepository itemsRepository;
 	
 	@Autowired
 	ModelMapper modelMapper;
 	
-	public GetDetailItemByIdService(ItemsRepository itemsRepository) {
+	public GetDetailItemByTitleService(ItemsRepository itemsRepository) {
 		this.itemsRepository = itemsRepository;
 	}
 	
-	public ItemsResponse getDetailItemById(Long id) {
-			Items item = itemsRepository.findById(id).orElse(null);
+	public ItemsResponse getDetailItemByTitle(String title) {
+			Items item = itemsRepository.findByTitle(title).orElse(null);
 		return convertToItems(item);
 	}
 	

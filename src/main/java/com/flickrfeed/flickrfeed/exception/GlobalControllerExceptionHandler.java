@@ -21,4 +21,22 @@ public class GlobalControllerExceptionHandler {
     public ResponseEntity<String> handleFeedNotFound(RuntimeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+    
+    @ExceptionHandler(ImageNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> handleImageNotFound(RuntimeException ex) {
+        return new ResponseEntity<>("Image not found", HttpStatus.NOT_FOUND);
+    }
+    
+    @ExceptionHandler(ItemNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> handleItemNotFound(RuntimeException ex) {
+        return new ResponseEntity<>("Item feed not found", HttpStatus.NOT_FOUND);
+    }
+    
+    @ExceptionHandler(DownloadImageErrorException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> handleDownloadImageError(RuntimeException ex) {
+        return new ResponseEntity<>("Download Error", HttpStatus.NOT_FOUND);
+    }
 }

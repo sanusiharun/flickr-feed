@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.flickrfeed.flickrfeed.exception.ImageNotFoundException;
+import com.flickrfeed.flickrfeed.exception.ItemNotFoundException;
 import com.flickrfeed.flickrfeed.model.entity.FlickrFeed;
 import com.flickrfeed.flickrfeed.model.request.FilterFlickrFeedRequest;
 import com.flickrfeed.flickrfeed.model.response.DeleteAllDataResponse;
@@ -29,7 +31,7 @@ import com.flickrfeed.flickrfeed.model.response.ItemsResponse;
 import com.flickrfeed.flickrfeed.model.response.JsonFlickrFeedResponse;
 import com.flickrfeed.flickrfeed.service.DeleteAllDataService;
 import com.flickrfeed.flickrfeed.service.GetAllPublicPhotosService;
-import com.flickrfeed.flickrfeed.service.GetDetailItemByIdService;
+import com.flickrfeed.flickrfeed.service.GetDetailItemByTitleService;
 import com.flickrfeed.flickrfeed.service.GetImageService;
 import com.flickrfeed.flickrfeed.service.GrabPublicPhotosService;
 import com.flickrfeed.flickrfeed.service.SearchFlickrFeedService;
@@ -39,23 +41,23 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
-@RequestMapping("feed/v1")
+@RequestMapping("api/feed/v1")
 public class FeedController {
 
 	GetAllPublicPhotosService getAllPublicPhotosService;
 	GrabPublicPhotosService grabPublicPhotosService;
-	GetDetailItemByIdService getDetailItemByIdService;
+	GetDetailItemByTitleService getDetailItemByTitleService;
 	SearchFlickrFeedService searchFlickrFeedService;
 	DeleteAllDataService deleteAllDataService;
 	GetImageService getImageService;
 
 	public FeedController(GetAllPublicPhotosService getAllPublicPhotosService,
-			GrabPublicPhotosService grabPublicPhotosService, GetDetailItemByIdService getDetailItemByIdService,
+			GrabPublicPhotosService grabPublicPhotosService, GetDetailItemByTitleService getDetailItemByIdService,
 			SearchFlickrFeedService searchFlickrFeedService, DeleteAllDataService deleteAllDataService,
 			GetImageService getImageService) {
 		this.getAllPublicPhotosService = getAllPublicPhotosService;
 		this.grabPublicPhotosService = grabPublicPhotosService;
-		this.getDetailItemByIdService = getDetailItemByIdService;
+		this.getDetailItemByTitleService = getDetailItemByIdService;
 		this.searchFlickrFeedService = searchFlickrFeedService;
 		this.deleteAllDataService = deleteAllDataService;
 		this.getImageService = getImageService;
@@ -77,13 +79,15 @@ public class FeedController {
 	@Operation(summary = "Get Flicker Feed from App DB", description = "API Get by ItemId from App DB")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 500, message = "Ups something error") })
-	@GetMapping(value = "get-flickr-feed/{itemId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ItemsResponse> getFlickrFeedByItemId(@PathVariable("itemId") Long itemId)
+	@GetMapping(value = "get-flickr-feed/{title}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ItemsResponse> getFlickrFeedByItemId(@PathVariable("title") String title)
 			throws JsonMappingException, JsonProcessingException {
 
-		ItemsResponse response = getDetailItemByIdService.getDetailItemById(itemId);
-		return response == null ? new ResponseEntity<>(null, HttpStatus.NO_CONTENT)
-				: new ResponseEntity<>(response, HttpStatus.OK);
+		ItemsResponse response = getDetailItemByTitleService.getDetailItemByTitle(title);
+		if (response == null)
+			throw new ItemNotFoundException();
+		else
+			return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@Operation(summary = "Get Flicker Feed from App DB", description = "Pagination with search criteria")
@@ -111,10 +115,10 @@ public class FeedController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 500, message = "Ups something error") })
 	@GetMapping(value = "get-item-image")
-	public ResponseEntity<Resource> getImage(@RequestParam("link") String link, HttpServletRequest request) throws IOException {
+	public ResponseEntity<Resource> getImage(@RequestParam("title") String title, HttpServletRequest request) throws IOException {
 
-		GetImageResponse image = getImageService.getImage(link);
-		if(image.getFilename()== null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		GetImageResponse image = getImageService.getImage(title);
+		if(image.getFilename()== null) throw new ImageNotFoundException();
 		Resource resource = image.getFile();		
 		String contentType = null;
 		try {
