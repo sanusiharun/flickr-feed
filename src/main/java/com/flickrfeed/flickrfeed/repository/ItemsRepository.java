@@ -14,8 +14,9 @@ public interface ItemsRepository extends JpaRepository<Items, Long>{
 
 	Optional<Items> findByTitle(String title);
 	
-	@Query(value = "select i.author, i.author_id as authorId, i.date_taken as dateTaken, i.title, i.link, i.published, i.tags from items i "
+	@Query(value = "select i.author, i.author_id as authorId, i.date_taken as dateTaken, i.title, i.link, i.published, i.tags, m.m as imageUrl from items i "
 			+ "inner join flickr_feed ff on ff.id = i.flickr_feed_id "
+			+ "inner join media m on m.items_id = i.id  "
 			+ "where lower(CAST(i.author AS TEXT)) like COALESCE(CAST(:author AS TEXT), lower(CAST(i.author AS TEXT))) "
 			+ "and lower(CAST(i.description AS TEXT)) like COALESCE(CAST(:description AS TEXT), lower(CAST(i.description AS TEXT))) "
 			+ "and lower(CAST(i.link AS TEXT)) like COALESCE(CAST(:link AS TEXT), lower(CAST(i.link AS TEXT))) "

@@ -41,6 +41,7 @@ public class SearchFlickrFeedService {
 				.published(item.getPublished())
 				.tags(item.getTags())
 				.title(item.getTitle())
+				.imageUrl(item.getImageUrl())
 				.build()).collect(Collectors.toList());
 		
 		FilterFlickrFeedResponse response = FilterFlickrFeedResponse.builder().content(getItemList).build();
@@ -50,7 +51,7 @@ public class SearchFlickrFeedService {
 
 	Page<ItemsView> getPageResultByInput(FilterFlickrFeedRequest input) {
 		String sortBy = input.getSortBy() != null && !input.getSortBy().isEmpty() ? input.getSortBy() : DEF_SORT_BY;
-		Pageable pageRequest = PageableUtil.createPageRequestNative(input, input.getPageSize(), input.getPageNumber(), sortBy, input.getSortType());
+		Pageable pageRequest = PageableUtil.createPageRequestNative(input, null == input.getPageSize() ? 10 :input.getPageSize(), null == input.getPageNumber() ? 1 :input.getPageNumber(), sortBy, input.getSortType());
         Page<ItemsView> pageResult = null;
         
 		if (!PageableUtil.isEmptyString(input.getAuthor())) {

@@ -49,4 +49,7 @@ public class Items {
 	
 	@Transient
 	private MediaResponse media;
+	
+	@Transient
+	private String imageUrl;
 }

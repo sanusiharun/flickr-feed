@@ -23,4 +23,5 @@ public class ItemsList {
 	private String author;
 	private String authorId;
 	private String tags;
+	private String imageUrl;
 }

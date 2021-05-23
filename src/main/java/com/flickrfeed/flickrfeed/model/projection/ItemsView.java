@@ -16,4 +16,6 @@ public interface ItemsView {
 	String getPublished();
 
 	String getTags();
+	
+	String getImageUrl();
 }

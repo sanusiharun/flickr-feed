@@ -18,15 +18,16 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-    show-sql: true
+    show-sql: false
 # custom path for swagger-ui
 springdoc:
   swagger-ui:
-    path: /swagger-ui-custom.html
     operationsSorter: method
   api-docs:
     path: /api-docs
+  paths-to-exclude: /swagger-resources/**
 springfox:
   documentation:
     swagger: 
       use-model-v3: false
+
